@@ -24,7 +24,8 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and run with private image
         run: |
-          docker pull softwarity/xliff-ai-translator:github
-          docker run -it -e REPOSITORY=${{ env.REPOSITORY }} -e BRANCH=${{ env.BRANCH }} -e STATE=${{ env.STATE }} -e EXT_XLIFF=${{ env.EXT_XLIFF}} -e AI_TOKEN=${{ env.AI_TOKEN }} -e TOKEN=${{ env.TOKEN }} --rm softwarity/xliff-ai-translator:github
+          "${{ secrets.GITHUB_TOKEN }}" | docker login ${{ env.REGISTRY_GH }} -u ${{ github.actor }} --password-stdin
+          docker pull ghcr.io/softwarity/xliff-ai-translator:github
+          docker run -it -e REPOSITORY=${{ env.REPOSITORY }} -e BRANCH=${{ env.BRANCH }} -e STATE=${{ env.STATE }} -e EXT_XLIFF=${{ env.EXT_XLIFF}} -e AI_TOKEN=${{ env.AI_TOKEN }} -e TOKEN=${{ env.TOKEN }} --rm ghcr.io/softwarity/xliff-ai-translator:github
 
 
