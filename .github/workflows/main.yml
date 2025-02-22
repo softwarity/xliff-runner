@@ -5,7 +5,7 @@ on:
 env:
   REGISTRY_GH: ghcr.io
   TOKEN: ${{ secrets.SOFTWARITY_ARCHWAY_TOKEN }}
-  AI_TOKEN: ${{ secrets.OPEN_AI_TOKEN }}
+  AI_TOKEN: ${{ secrets.OPENAI_TOKEN }}
   REPOSITORY: softwarity/archway
   BRANCH: oss
   EXT_XLIFF: .fr.xlf
@@ -24,7 +24,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and run with private image
         run: |
-          docker pull ghcr.io/softwarity/xliff-ai-translator:github
-          docker run -it -e REPOSITORY=${{ env.REPOSITORY }} -e BRANCH=${{ env.BRANCH }} -e STATE=${{ env.STATE }} -e EXT_XLIFF=${{ env.EXT_XLIFF}} -e AI_TOKEN=${{ env.AI_TOKEN }} -e TOKEN=${{ env.TOKEN }} --rm ghcr.io/softwarity/xliff-ai-translator:github
+          docker pull softwarity/xliff-ai-translator:github
+          docker run -it -e REPOSITORY=${{ env.REPOSITORY }} -e BRANCH=${{ env.BRANCH }} -e STATE=${{ env.STATE }} -e EXT_XLIFF=${{ env.EXT_XLIFF}} -e AI_TOKEN=${{ env.AI_TOKEN }} -e TOKEN=${{ env.TOKEN }} --rm softwarity/xliff-ai-translator:github
 
 
