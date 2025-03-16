@@ -29,7 +29,6 @@ on:
 
 env:
   REGISTRY_GH: ghcr.io
-  AI_TOKEN: ${{ secrets.OPENAI_TOKEN }}
 jobs:
   build:
     runs-on: ubuntu-latest
