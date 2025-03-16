@@ -1,1 +1,53 @@
+name: Estimate 
+run-name: ${{ github.actor }} run build on ${{ github.repository }}
+on:
+  workflow_dispatch:
+    inputs:
+      TOKEN: 
+        description: 'github token, gitlab token, bitbucket username:app_password'      
+        required: true
+      GIT_PROVIDER: 
+        description: 'github/gitlab/bitbucket'
+        required: true
+      REPOSITORY_INFO: 
+        description: 'repository slug, branch. eg: archway/archway@main'
+        required: true
+      EXT_XLIFF:
+        description: 'file extension to look for in repository'
+        required: false
+        default: '.xlf'
+      STATE:
+        description: 'target state to considerate as translate'
+        required: false
+        default: 'new'
+      WEBHOOK_URL:
+        description: 'webhook emit progress/error/done'
+        required: false
+      WEBHOOK_JWT:
+        description: 'webhook jwt'
+        required: false
 
+env:
+  REGISTRY_GH: ghcr.io
+  AI_TOKEN: ${{ secrets.OPENAI_TOKEN }}
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY_GH }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GH_READ_PACKAGES }}
+      - name: Build and run with private image
+        run: |
+          docker pull ghcr.io/softwarity/xliff-ai-translator:${{ github.event.inputs.GIT_PROVIDER }}-estimator
+          docker run  -e WEBHOOK_URL=${{ github.event.inputs.WEBHOOK_URL }} \
+                      -e WEBHOOK_JWT=${{ github.event.inputs.WEBHOOK_JWT }} \
+                      -e REPOSITORY_INFO=${{ github.event.inputs.REPOSITORY_INFO }} \
+                      -e STATE=${{ github.event.inputs.STATE }} \
+                      -e EXT_XLIFF=${{ github.event.inputs.EXT_XLIFF}} \
+                      -e TOKEN=${{ github.event.inputs.TOKEN }} \
+                      --rm ghcr.io/softwarity/xliff-ai-translator:${{ github.event.inputs.GIT_PROVIDER }}-estimator
