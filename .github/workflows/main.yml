@@ -27,7 +27,7 @@ on:
       DRY_RUN: 
         description: 'if true, do only an estimate'
         required: false
-        default: true
+        default: 'true'
       CREDITS: 
         description: 'credits'
         required: false
@@ -56,10 +56,11 @@ jobs:
       - name: Build and run with private image
         run: |
           docker pull ghcr.io/softwarity/xliff-ai-translator:${{ github.event.inputs.GIT_PROVIDER }}
-          docker run   -e WEBHOOK_URL=${{ github.event.inputs.WEBHOOK_URL }} \
+          docker run  -e WEBHOOK_URL=${{ github.event.inputs.WEBHOOK_URL }} \
                       -e WEBHOOK_JWT=${{ github.event.inputs.WEBHOOK_JWT }} \
                       -e CREDITS=${{ github.event.inputs.CREDITS }} \
                       -e REPOSITORY_INFO=${{ github.event.inputs.REPOSITORY_INFO }} \
+                      -e DRY_RUN=${{ github.event.inputs.DRY_RUN }} \
                       -e BRANCH=${{ github.event.inputs.BRANCH }} \
                       -e STATE=${{ github.event.inputs.STATE }} \
                       -e PROCEEDED_STATE=${{ github.event.inputs.PROCEEDED_STATE }} \
