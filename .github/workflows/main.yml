@@ -6,16 +6,12 @@ on:
       TOKEN: 
         description: 'github token, gitlab token, bitbucket username:app_password'      
         required: true
-      REPOSITORY: 
-        description: 'repository slug. eg: archway/archway'
-        required: true
-      GIT_PROVIDER:
+      GIT_PROVIDER: 
         description: 'github/gitlab/bitbucket'
         required: true
-      BRANCH:
-        description: 'branch to process'
-        required: false
-        default: 'main'
+      REPOSITORY_INFO: 
+        description: 'repository slug, branch. eg: archway/archway@main'
+        required: true
       EXT_XLIFF:
         description: 'file extension to look for in repository'
         required: false
@@ -39,9 +35,9 @@ on:
       WEBHOOK_URL:
         description: 'webhook emit progress/error/done'
         required: false
-#      WEBHOOK_JWT:
-#        description: 'webhook jwt'
-#        required: false
+      WEBHOOK_JWT:
+        description: 'webhook jwt'
+        required: false
 
 env:
   REGISTRY_GH: ghcr.io
@@ -63,7 +59,7 @@ jobs:
           docker run   -e WEBHOOK_URL=${{ github.event.inputs.WEBHOOK_URL }} \
                       -e WEBHOOK_JWT=${{ github.event.inputs.WEBHOOK_JWT }} \
                       -e CREDITS=${{ github.event.inputs.CREDITS }} \
-                      -e REPOSITORY=${{ github.event.inputs.REPOSITORY }} \
+                      -e REPOSITORY_INFO=${{ github.event.inputs.REPOSITORY_INFO }} \
                       -e BRANCH=${{ github.event.inputs.BRANCH }} \
                       -e STATE=${{ github.event.inputs.STATE }} \
                       -e PROCEEDED_STATE=${{ github.event.inputs.PROCEEDED_STATE }} \
