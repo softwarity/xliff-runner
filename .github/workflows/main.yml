@@ -11,7 +11,11 @@ env:
   BRANCH: oss
   EXT_XLIFF: .fr.xlf
   STATE: nouveaux
+  PROCEEDED_STATE:  translated
   DRY_RUN: false
+  CREDITS: 0
+  WEBHOOK_URL: ''
+  WEBHOOK_JWT: ''
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,6 +30,6 @@ jobs:
       - name: Build and run with private image
         run: |
           docker pull ghcr.io/softwarity/xliff-ai-translator:${{ env.GIT_PROVIDER }}
-          docker run -e REPOSITORY=${{ env.REPOSITORY }} -e BRANCH=${{ env.BRANCH }} -e STATE=${{ env.STATE }} -e EXT_XLIFF=${{ env.EXT_XLIFF}} -e AI_TOKEN=${{ env.AI_TOKEN }} -e TOKEN=${{ env.TOKEN }} --rm ghcr.io/softwarity/xliff-ai-translator:${{ env.GIT_PROVIDER }}
+          docker run -e WEBHOOK_URL=${{ WEBHOOK_URL }} -e WEBHOOK_JWT=${{ WEBHOOK_JWT }} -e CREDITS=${{ en.CREDITS }} -e REPOSITORY=${{ env.REPOSITORY }} -e BRANCH=${{ env.BRANCH }} -e STATE=${{ env.STATE }} -e PROCEEDED_STATE=${{ env.PROCEEDED_STATE }} -e EXT_XLIFF=${{ env.EXT_XLIFF}} -e AI_TOKEN=${{ env.AI_TOKEN }} -e TOKEN=${{ env.TOKEN }} --rm ghcr.io/softwarity/xliff-ai-translator:${{ env.GIT_PROVIDER }}
 
 
