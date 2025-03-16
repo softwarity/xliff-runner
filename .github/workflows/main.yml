@@ -39,9 +39,9 @@ on:
       WEBHOOK_URL:
         description: 'webhook emit progress/error/done'
         required: false
-      WEBHOOK_JWT:
-        description: 'webhook jwt'
-        required: false
+#      WEBHOOK_JWT:
+#        description: 'webhook jwt'
+#        required: false
 
 env:
   REGISTRY_GH: ghcr.io
