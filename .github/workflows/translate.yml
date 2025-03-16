@@ -62,6 +62,6 @@ jobs:
                       -e EXT_XLIFF=${{ github.event.inputs.EXT_XLIFF}} \
                       -e AI_TOKEN=${{ env.AI_TOKEN }} \
                       -e TOKEN=${{ github.event.inputs.TOKEN }} \
-                      --rm ghcr.io/softwarity/xliff-ai-translator:${{ github.event.inputs.GIT_PROVIDER }}
+                      --rm ghcr.io/softwarity/xliff-ai-translator:${{ github.event.inputs.GIT_PROVIDER }}-translator
 
 
