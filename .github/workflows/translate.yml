@@ -56,7 +56,6 @@ jobs:
                       -e WEBHOOK_JWT=${{ github.event.inputs.WEBHOOK_JWT }} \
                       -e CREDITS=${{ github.event.inputs.CREDITS }} \
                       -e REPOSITORY_INFO=${{ github.event.inputs.REPOSITORY_INFO }} \
-                      -e BRANCH=${{ github.event.inputs.BRANCH }} \
                       -e STATE=${{ github.event.inputs.STATE }} \
                       -e PROCEEDED_STATE=${{ github.event.inputs.PROCEEDED_STATE }} \
                       -e EXT_XLIFF=${{ github.event.inputs.EXT_XLIFF}} \
