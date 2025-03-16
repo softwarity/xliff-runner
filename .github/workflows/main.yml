@@ -2,20 +2,50 @@ name: Build
 run-name: ${{ github.actor }} run build on ${{ github.repository }}
 on:
   workflow_dispatch:
+    inputs:
+      TOKEN: 
+        description: 'github token, gitlab token, bitbucket username:app_password'      
+        required: true
+      REPOSITORY: 
+        description: 'repository slug. eg: archway/archway'
+        required: true
+      GIT_PROVIDER:
+        description: 'github/gitlab/bitbucket'
+        required: true
+      BRANCH:
+        description: 'branch to process'
+        required: false
+        default: 'main'
+      EXT_XLIFF:
+        description: 'file extension to look for in repository'
+        required: false
+        default: '.xlf'
+      STATE:
+        description: 'target state to considerate as translate'
+        required: false
+        default: 'new'
+      PROCEEDED_STATE:  
+        description: 'target state value when translated'
+        required: false
+        default: 'translated'
+      DRY_RUN: 
+        description: 'if true, do only an estimate'
+        required: false
+        default: true
+      CREDITS: 
+        description: 'credits'
+        required: true
+        default: '0'
+      WEBHOOK_URL:
+        description: 'webhook emit progress/error/done'
+        required: false
+      WEBHOOK_JWT:
+        description: 'webhook jwt'
+        required: false
+
 env:
   REGISTRY_GH: ghcr.io
-  TOKEN: ${{ secrets.SOFTWARITY_ARCHWAY_TOKEN }}
   AI_TOKEN: ${{ secrets.OPENAI_TOKEN }}
-  REPOSITORY: softwarity/archway
-  GIT_PROVIDER: github
-  BRANCH: oss
-  EXT_XLIFF: .fr.xlf
-  STATE: nouveaux
-  PROCEEDED_STATE:  translated
-  DRY_RUN: false
-  CREDITS: 0
-  WEBHOOK_URL: ''
-  WEBHOOK_JWT: ''
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -29,7 +59,17 @@ jobs:
           password: ${{ secrets.GH_READ_PACKAGES }}
       - name: Build and run with private image
         run: |
-          docker pull ghcr.io/softwarity/xliff-ai-translator:${{ env.GIT_PROVIDER }}
-          docker run -e WEBHOOK_URL=${{ WEBHOOK_URL }} -e WEBHOOK_JWT=${{ WEBHOOK_JWT }} -e CREDITS=${{ en.CREDITS }} -e REPOSITORY=${{ env.REPOSITORY }} -e BRANCH=${{ env.BRANCH }} -e STATE=${{ env.STATE }} -e PROCEEDED_STATE=${{ env.PROCEEDED_STATE }} -e EXT_XLIFF=${{ env.EXT_XLIFF}} -e AI_TOKEN=${{ env.AI_TOKEN }} -e TOKEN=${{ env.TOKEN }} --rm ghcr.io/softwarity/xliff-ai-translator:${{ env.GIT_PROVIDER }}
+          docker pull ghcr.io/softwarity/xliff-ai-translator:${{ github.event.inputs.GIT_PROVIDER }}
+          docker run   -e WEBHOOK_URL=${{ github.event.inputs.WEBHOOK_URL }} \
+                      -e WEBHOOK_JWT=${{ github.event.inputs.WEBHOOK_JWT }} \
+                      -e CREDITS=${{ github.event.inputs.CREDITS }} \
+                      -e REPOSITORY=${{ github.event.inputs.REPOSITORY }} \
+                      -e BRANCH=${{ github.event.inputs.BRANCH }} \
+                      -e STATE=${{ github.event.inputs.STATE }} \
+                      -e PROCEEDED_STATE=${{ github.event.inputs.PROCEEDED_STATE }} \
+                      -e EXT_XLIFF=${{ github.event.inputs.EXT_XLIFF}} \
+                      -e AI_TOKEN=${{ env.AI_TOKEN }} \
+                      -e TOKEN=${{ github.event.inputs.TOKEN }} \
+                      --rm ghcr.io/softwarity/xliff-ai-translator:${{ github.event.inputs.GIT_PROVIDER }}
 
 
