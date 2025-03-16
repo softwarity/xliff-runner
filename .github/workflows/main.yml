@@ -34,7 +34,7 @@ on:
         default: true
       CREDITS: 
         description: 'credits'
-        required: true
+        required: false
         default: '0'
       WEBHOOK_URL:
         description: 'webhook emit progress/error/done'
