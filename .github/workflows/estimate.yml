@@ -30,10 +30,18 @@ on:
 env:
   REGISTRY_GH: ghcr.io
 jobs:
-  build:
+  call-webhook:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+    - name: Call Webhook with JWT
+      run: |
+        curl -X POST ${{ github.event.inputs.WEBHOOK_URL }} \
+          -H "Content-Type: application/json" \
+          -H "Authorization: Bearer ${{ github.event.inputs.WEBHOOK_JWT }}" \
+          -d '{"type": "start"}'
+  estimate:
+    runs-on: ubuntu-latest
+    steps:
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
