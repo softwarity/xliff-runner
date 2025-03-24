@@ -38,7 +38,13 @@ jobs:
         curl -X POST ${{ github.event.inputs.WEBHOOK_URL }} \
           -H "Content-Type: application/json" \
           -H "Authorization: Bearer ${{ github.event.inputs.WEBHOOK_JWT }}" \
-          -d '{"type": "start"}'
+          -d '{ \
+            "type": "start", \
+            "run_id": "${{ github.run_id }}", \
+            "workflow": "${{ github.workflow }}", \
+            "job": "${{ github.job }}", \
+            "run_number": "${{ github.run_number }}" \
+          }'
   estimate:
     runs-on: ubuntu-latest
     steps:
