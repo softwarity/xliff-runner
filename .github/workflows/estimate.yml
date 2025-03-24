@@ -47,6 +47,7 @@ jobs:
           }'
   estimate:
     runs-on: ubuntu-latest
+    needs: call-webhook-start
     steps:
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
@@ -66,6 +67,7 @@ jobs:
                       --rm ghcr.io/softwarity/xliff-ai-translator:${{ github.event.inputs.GIT_PROVIDER }}-estimator
   call-webhook-done:
     runs-on: ubuntu-latest
+    needs: estimate
     steps:
     - name: Call Webhook with JWT
       run: |
