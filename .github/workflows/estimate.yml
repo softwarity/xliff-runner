@@ -6,6 +6,9 @@ on:
       TOKEN: 
         description: 'github token, gitlab token, bitbucket username:app_password'      
         required: true
+      USER_ID:
+        description: 'user_id'
+        required: true
       GIT_PROVIDER: 
         description: 'github/gitlab/bitbucket'
         required: true
@@ -40,10 +43,11 @@ jobs:
           -H "Authorization: Bearer ${{ github.event.inputs.WEBHOOK_JWT }}" \
           -d '{
             "type": "start",
-            "run_id": "${{ github.run_id }}",
+            "userId": "${{ github.event.inputs.USER_ID }}",
+            "runId": "${{ github.run_id }}",
             "workflow": "${{ github.workflow }}",
             "job": "${{ github.job }}",
-            "run_number": "${{ github.run_number }}"
+            "runNumber": "${{ github.run_number }}"
           }'
   estimate:
     runs-on: ubuntu-latest
@@ -76,9 +80,10 @@ jobs:
           -H "Authorization: Bearer ${{ github.event.inputs.WEBHOOK_JWT }}" \
           -d '{
             "type": "done",
-            "run_id": "${{ github.run_id }}",
+            "userId": "${{ github.event.inputs.USER_ID }}",
+            "runId": "${{ github.run_id }}",
             "workflow": "${{ github.workflow }}",
             "job": "${{ github.job }}",
-            "run_number": "${{ github.run_number }}"
+            "runNumber": "${{ github.run_number }}"
           }'
 
