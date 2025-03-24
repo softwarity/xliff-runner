@@ -6,9 +6,6 @@ on:
       TOKEN: 
         description: 'github token, gitlab token, bitbucket username:app_password'      
         required: true
-      USER_ID:
-        description: 'user_id'
-        required: true
       GIT_PROVIDER: 
         description: 'github/gitlab/bitbucket'
         required: true
