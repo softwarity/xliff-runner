@@ -38,17 +38,10 @@ jobs:
     steps:
     - name: Call Webhook with JWT
       run: |
-        curl -X POST ${{ github.event.inputs.WEBHOOK_URL }} \
+        curl -X POST ${{ github.event.inputs.WEBHOOK_URL }}/${{ github.run_id }} \
           -H "Content-Type: application/json" \
           -H "Authorization: Bearer ${{ github.event.inputs.WEBHOOK_JWT }}" \
-          -d '{
-            "type": "start",
-            "userId": "${{ github.event.inputs.USER_ID }}",
-            "runId": "${{ github.run_id }}",
-            "workflow": "${{ github.workflow }}",
-            "job": "${{ github.job }}",
-            "runNumber": "${{ github.run_number }}"
-          }'
+          -d '{"type": "start"}'
   estimate:
     runs-on: ubuntu-latest
     needs: call-webhook-start
@@ -62,7 +55,7 @@ jobs:
       - name: Build and run with private image
         run: |
           docker pull ghcr.io/softwarity/xliff-ai-translator:${{ github.event.inputs.GIT_PROVIDER }}-estimator
-          docker run  -e WEBHOOK_URL=${{ github.event.inputs.WEBHOOK_URL }} \
+          docker run  -e WEBHOOK_URL=${{ github.event.inputs.WEBHOOK_URL }}/${{ github.run_id }} \
                       -e WEBHOOK_JWT=${{ github.event.inputs.WEBHOOK_JWT }} \
                       -e REPOSITORY_INFO=${{ github.event.inputs.REPOSITORY_INFO }} \
                       -e STATE=${{ github.event.inputs.STATE }} \
@@ -75,15 +68,8 @@ jobs:
     steps:
     - name: Call Webhook with JWT
       run: |
-        curl -X POST ${{ github.event.inputs.WEBHOOK_URL }} \
+        curl -X POST ${{ github.event.inputs.WEBHOOK_URL }}/${{ github.run_id }} \
           -H "Content-Type: application/json" \
           -H "Authorization: Bearer ${{ github.event.inputs.WEBHOOK_JWT }}" \
-          -d '{
-            "type": "done",
-            "userId": "${{ github.event.inputs.USER_ID }}",
-            "runId": "${{ github.run_id }}",
-            "workflow": "${{ github.workflow }}",
-            "job": "${{ github.job }}",
-            "runNumber": "${{ github.run_number }}"
-          }'
+          -d '{"type": "done"}'
 
