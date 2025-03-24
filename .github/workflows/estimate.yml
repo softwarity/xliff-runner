@@ -30,7 +30,7 @@ on:
 env:
   REGISTRY_GH: ghcr.io
 jobs:
-  call-webhook:
+  call-webhook-start:
     runs-on: ubuntu-latest
     steps:
     - name: Call Webhook with JWT
@@ -64,3 +64,19 @@ jobs:
                       -e EXT_XLIFF=${{ github.event.inputs.EXT_XLIFF}} \
                       -e TOKEN=${{ github.event.inputs.TOKEN }} \
                       --rm ghcr.io/softwarity/xliff-ai-translator:${{ github.event.inputs.GIT_PROVIDER }}-estimator
+  call-webhook-done:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Call Webhook with JWT
+      run: |
+        curl -X POST ${{ github.event.inputs.WEBHOOK_URL }} \
+          -H "Content-Type: application/json" \
+          -H "Authorization: Bearer ${{ github.event.inputs.WEBHOOK_JWT }}" \
+          -d '{ \
+            "type": "done", \
+            "run_id": "${{ github.run_id }}", \
+            "workflow": "${{ github.workflow }}", \
+            "job": "${{ github.job }}", \
+            "run_number": "${{ github.run_number }}" \
+          }'
+
