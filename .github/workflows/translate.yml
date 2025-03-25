@@ -36,7 +36,9 @@ on:
         required: false
       DRY_RUN:
         description: 'dry run'
+        type: boolean
         required: false
+        default: false
 env:
   REGISTRY_GH: ghcr.io
   AI_TOKEN: ${{ secrets.OPENAI_TOKEN }}
