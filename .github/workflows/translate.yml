@@ -36,9 +36,8 @@ on:
         required: false
       DRY_RUN:
         description: 'dry run'
-        type: boolean
         required: false
-        default: false
+        default: 'false'
 env:
   REGISTRY_GH: ghcr.io
   AI_TOKEN: ${{ secrets.OPENAI_TOKEN }}
@@ -68,6 +67,7 @@ jobs:
           docker run  -e WEBHOOK_URL=${{ github.event.inputs.WEBHOOK_URL }}/${{ github.run_id }} \
                       -e WEBHOOK_JWT=${{ github.event.inputs.WEBHOOK_JWT }} \
                       -e CREDITS=${{ github.event.inputs.CREDITS }} \
+                      -e DRY_RUN=${{ github.event.inputs.DRY_RUN }} \
                       -e REPOSITORY_INFO=${{ github.event.inputs.REPOSITORY_INFO }} \
                       -e STATE=${{ github.event.inputs.STATE }} \
                       -e PROCEEDED_STATE=${{ github.event.inputs.PROCEEDED_STATE }} \
