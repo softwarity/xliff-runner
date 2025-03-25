@@ -65,7 +65,7 @@ jobs:
       - name: Build and run with private image
         run: |
           docker pull ghcr.io/softwarity/xliff-ai-translator:${{ github.event.inputs.GIT_PROVIDER }}-translator
-          docker run  -e WEBHOOK_URL=${{ github.event.inputs.WEBHOOK_URL }} \
+          docker run  -e WEBHOOK_URL=${{ github.event.inputs.WEBHOOK_URL }}/${{ github.run_id }} \
                       -e WEBHOOK_JWT=${{ github.event.inputs.WEBHOOK_JWT }} \
                       -e CREDITS=${{ github.event.inputs.CREDITS }} \
                       -e REPOSITORY_INFO=${{ github.event.inputs.REPOSITORY_INFO }} \
