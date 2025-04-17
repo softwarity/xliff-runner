@@ -65,4 +65,4 @@ jobs:
         curl -X POST ${{ github.event.inputs.WEBHOOK_URL }}/${{ github.run_id }} \
           -H "Content-Type: application/json" \
           -H "Authorization: Bearer ${{ github.event.inputs.WEBHOOK_JWT }}" \
-          -d '{"type": "error", "message": "Estimate job failed"}'
+          -d '{"type": "failed", "message": "Estimate job failed"}'

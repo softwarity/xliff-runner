@@ -66,4 +66,4 @@ jobs:
         curl -X POST ${{ github.event.inputs.WEBHOOK_URL }}/${{ github.run_id }} \
           -H "Content-Type: application/json" \
           -H "Authorization: Bearer ${{ github.event.inputs.WEBHOOK_JWT }}" \
-          -d '{"type": "error", "message": "Translation job failed"}'
+          -d '{"type": "failed", "message": "Translation job failed"}'
