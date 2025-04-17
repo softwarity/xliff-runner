@@ -43,7 +43,7 @@ jobs:
           docker pull ghcr.io/softwarity/xliff-ai-translator:${{ github.event.inputs.GIT_PROVIDER }}-estimator
           docker run  -e WEBHOOK_URL=${{ github.event.inputs.WEBHOOK_URL }}/${{ github.run_id }} \
                       -e WEBHOOK_JWT=${{ github.event.inputs.WEBHOOK_JWT }} \
-                      -e OPTIONS=${{ github.event.inputs.OPTIONS }} \
+                      -e OPTIONS=\"${{ github.event.inputs.OPTIONS }}\" \
                       --rm ghcr.io/softwarity/xliff-ai-translator:${{ github.event.inputs.GIT_PROVIDER }}-estimator
   call-webhook-done:
     runs-on: ubuntu-latest
