@@ -22,7 +22,7 @@ jobs:
   call-webhook-start:
     runs-on: ubuntu-latest
     steps:
-    - name: Call Webhook with JWT
+    - name: Call Webhook start
       run: |
         curl -X POST ${{ github.event.inputs.WEBHOOK_URL }}/${{ github.run_id }} \
           -H "Content-Type: application/json" \
@@ -50,10 +50,20 @@ jobs:
     runs-on: ubuntu-latest
     needs: translate
     steps:
-    - name: Call Webhook with JWT
+    - name: Call Webhook done
       run: |
         curl -X POST ${{ github.event.inputs.WEBHOOK_URL }}/${{ github.run_id }} \
           -H "Content-Type: application/json" \
           -H "Authorization: Bearer ${{ github.event.inputs.WEBHOOK_JWT }}" \
           -d '{"type": "done"}'
-
+  call-webhook-error:
+    runs-on: ubuntu-latest
+    needs: translate
+    if: ${{ failure() && needs.translate.result == 'failure' }}
+    steps:
+    - name: Call Webhook error
+      run: |
+        curl -X POST ${{ github.event.inputs.WEBHOOK_URL }}/${{ github.run_id }} \
+          -H "Content-Type: application/json" \
+          -H "Authorization: Bearer ${{ github.event.inputs.WEBHOOK_JWT }}" \
+          -d '{"type": "error", "message": "Translation job failed"}'
