@@ -7,7 +7,7 @@ on:
         description: 'github/gitlab/bitbucket'
         required: true
       OPTIONS:
-        description: 'file extension to look for in repository'
+        description: 'options in json format'
         required: true
       WEBHOOK_URL:
         description: 'webhook emit progress/error/done'
